@@ -13,7 +13,7 @@ createBoard( Board, Size, Vars ) :-
 	length( Board, Size ),
 	createLines( Board, Size, Vars ).
 
-%Applies the given constraints to the given row or collumn. If Start/End is 0, no constraints are acknowledged.
+%Applies the given constraints to the given row or column. If Start/End is 0, no constraints are acknowledged.
 applyConstraint( List, Size, Start, End ) :-
 	nth1( 1, List, Elem1 ), %Get the first element.
 	nth1( 2, List, Elem2 ), %Get the second element.
@@ -27,7 +27,7 @@ applyConstraint( List, Size, Start, End ) :-
 	ElemLast #= End ;
 	( ElemLast #= 0 , ElemNTL #= End ) ).
 
-%Applies to all the lines or collumns of the Board the Starts and Ends lists of constraints, as well as ensure that all lines and collumns have different numbers by using permutations of a list of possible numbers.
+%Applies to all the lines or columns of the Board the Starts and Ends lists of constraints, as well as ensure that all lines and columns have different numbers by using permutations of a list of possible numbers.
 listsConstraint( [], _, [], [] ). %Stop condition.
 listsConstraint( [BoardH|BoardT], Size, [StartH|StartT], [EndH|EndT] ) :-
 	all_distinct( BoardH ),
