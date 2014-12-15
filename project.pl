@@ -21,11 +21,11 @@ applyConstraint( List, Size, Start, End ) :-
 	nth1( Size, List, ElemLast ), %Get the last element.
 	nth1( NextToLast, List, ElemNTL ), %Get the next-to-last element.
 	( Start #= 0 ; %Either the restriction we're applying is blank (0) and thus the first element can be anything, or...
-	Elem1 #= Start ; %The restriction isn't blank but the first element is the same as the restriction, or...
-	( Elem1 #= 0 , Elem2 #= Start ) ), %The first element is blank (0), so that the restriction is still the first to appear, and the second element is the restriction.
+	Elem1 #= Start #\/ %The restriction isn't blank but the first element is the same as the restriction, or...
+	( Elem1 #= 0 #/\ Elem2 #= Start ) #<=> 1 ), %The first element is blank (0), so that the restriction is still the first to appear, and the second element is the restriction.
 	( End #= 0 ; %The same logic applies to the ends of the lists.
-	ElemLast #= End ;
-	( ElemLast #= 0 , ElemNTL #= End ) ).
+	ElemLast #= End #\/
+	( ElemLast #= 0 #/\ ElemNTL #= End ) #<=> 1 ).
 
 %Applies to all the lines or columns of the Board the Starts and Ends lists of constraints, as well as ensure that all lines and columns have different numbers by using permutations of a list of possible numbers.
 listsConstraint( [], _, [], [] ). %Stop condition.
@@ -109,6 +109,7 @@ start( Left, Up, Right, Down ) :-
 	Limit is Size-1, %We get the upper-bound limit for the domain of each variable.
 	domain( Vars, 0, Limit ), %And we apply said limit, which is between 0 and Size-1, both inclusive.
 	boardConstraints( Board, Left, Up, Right, Down, Size ), %And then we apply the constraints.
+	%write( Vars ), nl,
 	labeling( [], Vars ),
 	%Finally, after applying all constraints and if we've done it successfully, we can draw the Board, as well as its constraints.
 	drawBoard( Board, Size, Left, Up, Right, Down ).
@@ -130,3 +131,13 @@ puzzle4 :-
 	start( [0,0,0,1,0], [0,2,0,3,0], [1,0,0,0,0], [2,0,3,0,0] ).
 puzzle5 :-
 	start( [4,2,3,1,2], [4,1,2,1,3], [3,1,4,2,1], [0,2,3,4,1] ).
+puzzle6 :-
+	start( [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] ).
+puzzle7 :-
+	start( [0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] ).
